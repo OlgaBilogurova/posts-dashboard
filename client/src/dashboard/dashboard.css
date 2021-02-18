@@ -1,0 +1,19 @@
+.app-main {
+    display: flex;
+}
+
+.posts-container {
+    width: 80%;
+    overflow: hidden;
+    height: calc(100vh - 115px);
+    padding: 20px 10px 20px 30px;
+}
+
+.posts {
+    padding-right: 20px;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
