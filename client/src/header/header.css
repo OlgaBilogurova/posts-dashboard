@@ -1,0 +1,14 @@
+.app-header {
+    background-color: #cfe2f3;
+    min-height: 55px;
+    height: 55px;
+    width: 100vw;
+}
+
+.app-header h1 {
+    font-size: 20px;
+    line-height: 1;
+    margin: 0;
+    padding: 17px 20px;
+    font-weight: 600;
+}
