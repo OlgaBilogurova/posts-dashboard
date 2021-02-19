@@ -1,0 +1,88 @@
+.popup-container {
+  position: absolute;
+  width: 300px;
+  height: 350px;
+  background: #ffffff;
+  z-index: 2;
+  padding: 60px 35px 50px;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  font-size: 18px;
+  line-height: 25px;
+  transition: opacity .3s ease-in-out;
+  transition-delay: .3s;
+  text-align: right;
+}
+
+.popup-container.open {
+  box-shadow: 0 0 4px 1px gray;
+}
+
+.popup-container.open .popup-content {
+  opacity: 1;
+}
+
+.button-container {
+  display: block;
+  position: absolute;
+  right: 10px;
+  top: 15px;
+  z-index: 3;
+}
+
+.button-container .close-button {
+  padding: 3px;
+}
+
+.close-button .line {
+  background-color: black;
+  display: block;
+  margin: 7px auto;
+  height: 3px;
+  width: 20px;
+  border-radius: 3px;
+}
+
+.close-button .line:nth-child(1) {
+  transform: translateY(-3px) rotate(45deg);
+}
+
+.close-button .line:nth-child(2) {
+  transform: translateY(-13px) rotate(-45deg);
+}
+
+.close-button:hover {
+   cursor: pointer;
+ }
+
+.bg-overlay {
+  opacity: 0;
+  display: none;
+  transition: opacity .3s ease-in-out;
+  transition-delay: .1s;
+}
+
+.bg-overlay.active {
+  position: absolute;
+  display: block;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(196, 196, 196, 0.4);
+  height: 100%;
+  opacity: 1;
+}
+
+.submit-btn {
+  margin: 50px 0 10px;
+}
+
+.success-message {
+  color: forestgreen;
+  font-size: 18px;
+  font-weight: 600;
+}
