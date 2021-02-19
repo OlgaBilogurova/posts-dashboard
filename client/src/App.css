@@ -5,6 +5,7 @@
   flex-direction: column;
   overflow: hidden;
   color: #000000;
+  font-size: 14px;
 }
 
 .flex-container {
@@ -38,3 +39,7 @@
   background-color: #F2F2F2;
 }
 /*** End customize scroll-bar ***/
+
+button:focus {
+  outline: none;
+}

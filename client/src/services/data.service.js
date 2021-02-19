@@ -23,3 +23,20 @@ export async function fetchUsers() {
         return null;
     }
 }
+
+export async function saveNewPost(post) {
+    try {
+        const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(post),
+        });
+        return await response.json();
+    } catch (error) {
+        console.log('Couldn\'t save a new post on the backend');
+        console.log(error);
+        return null;
+    }
+}
