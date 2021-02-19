@@ -6,6 +6,7 @@
   overflow: hidden;
   color: #000000;
   font-size: 14px;
+  line-height: 1;
 }
 
 .flex-container {
@@ -39,6 +40,22 @@
   background-color: #F2F2F2;
 }
 /*** End customize scroll-bar ***/
+
+button {
+  background-color: #d9d2e9;
+  border: 1px solid #000000;
+  border-radius: 20px;
+  transition: .3s ease;
+  cursor: pointer;
+  padding: 5px 12px;
+  margin: 0 auto;
+}
+
+button:hover {
+  background-color: #9771EC;
+  color: #F2F2F2;
+  border-color: #9771EC;
+}
 
 button:focus {
   outline: none;
