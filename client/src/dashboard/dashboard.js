@@ -13,10 +13,12 @@ const Dashboard = () => {
 
     const [users, setUsers] = useState([]);
     const [posts, setPosts] = useState([]);
+
     const [usersById, setUsersById] = useState({});
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [newPostContent, setNewPostContent] = useState('');
     const [selectedPost, setSelectedPost] = useState(null);
+    const [filteredPosts, setFilteredPosts] = useState([]);
     const [popupMessage, setPopupMessage] = useState('');
     const [popupBtnName, setPopupBtnName] = useState('button');
 
@@ -65,7 +67,7 @@ const Dashboard = () => {
         setPopupMessage(CREATE_POST_MSG);
 
         // save a new post to the state
-        setPosts([...posts, newPost]);
+        setFilteredPosts([...posts, newPost]);
 
         // close popup, hide message, clear textarea
         cleanPopup();
@@ -73,7 +75,7 @@ const Dashboard = () => {
 
     const editPost = () => {
         // allows edit post body
-        let updatedPosts = posts.map((post) => {
+        const updatedPosts = posts.map((post) => {
             if (post.id === selectedPost.id) {
                 return { ...post, body: newPostContent };
             } else {
@@ -83,18 +85,18 @@ const Dashboard = () => {
         setPopupMessage(EDIT_POST_MSG);
 
         // update state for posts
-        setPosts(updatedPosts);
+        setFilteredPosts(updatedPosts);
 
         // close popup, hide message, clear textarea
         cleanPopup();
     }
 
     const deletePost = () => {
-        let updatedPosts = posts.filter((post) => (post.id !== selectedPost.id));
+        const updatedPosts = posts.filter((post) => (post.id !== selectedPost.id));
         setPopupMessage(DELETE_POST_MSG);
 
         // update state for posts
-        setPosts(updatedPosts);
+        setFilteredPosts(updatedPosts);
 
         // close popup, hide message, clear textarea
         cleanPopup();
@@ -116,6 +118,11 @@ const Dashboard = () => {
         setUsersById(usersObj);
     }
 
+    const filterByUserName = (e) => {
+        const updatedPosts = posts.filter((post) => (post.userId === parseInt(e.target.value)));
+        setFilteredPosts(updatedPosts);
+    }
+
     useEffect(() => {
         async function fetchData() {
             const users = await fetchUsers();
@@ -129,23 +136,24 @@ const Dashboard = () => {
             processUsers(data.users);
             setUsers(data.users);
             setPosts(data.posts);
+            setFilteredPosts(data.posts);
         });
     }, []);
 
     return (
       <div className="dashboard">
-          <Header />
+          <Header users={users} filterByUserName={filterByUserName} />
 
           <main className="app-main">
               <Sidebar
                 numOfUsers={users.length}
-                numOfPosts={posts.length}
+                numOfPosts={filteredPosts.length}
                 openPopup={openPopup}
               />
 
               <section className="posts-container">
                   <div className="posts custom-scroll-bar">
-                      {posts.map((post) => (
+                      {filteredPosts.map((post) => (
                         <Post
                           post={post}
                           userName={usersById[post.userId].name}

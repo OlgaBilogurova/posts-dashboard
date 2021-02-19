@@ -1,14 +1,61 @@
 .app-header {
     background-color: #cfe2f3;
     min-height: 55px;
-    height: 55px;
+    height: 80px;
     width: 100vw;
+    display: flex;
+    align-items: center;
 }
 
 .app-header h1 {
     font-size: 20px;
     line-height: 1;
     margin: 0;
-    padding: 17px 20px;
+    padding: 5px 20px;
     font-weight: 600;
+    flex-basis: 20%;
+}
+
+.filters-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-basis: 80%;
+    padding: 5px 20px;
+}
+
+.dropdown-container {
+    min-height: 35px;
+}
+
+.dropdown-container:first-child {
+    margin-right: 20px;
+}
+
+.dropdown-container label {
+    border: 1px solid #000000;
+    border-radius: 20px 0 0 20px;
+    padding: 8.8px 12px;
+    background-color: #d9d2e9;
+    font-size: 13px;
+    line-height: 1;
+    font-family: sans-serif;
+}
+
+.dropdown-select {
+    border: 1px solid #000000;
+    padding: 8px 16px 8px 8px;
+    background-color: #d9d2e9;
+    cursor: pointer;
+    font-size: 13px;
+    line-height: 1;
+    font-family: sans-serif;
+    width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dropdown-select:focus {
+    outline: none;
 }
