@@ -5,9 +5,10 @@ const Popup = ({
   isPopupOpen,
   closePopup,
   newPostContent,
-  addNewPost,
+  handleClickPopupBtn,
   handleTextareaChange,
-  isMessage,
+  popupMessage,
+  popupBtnName
 }) => {
   return (
     <div
@@ -32,12 +33,10 @@ const Popup = ({
           onChange={(e) => handleTextareaChange(e)}
         />
 
-        {isMessage && (
-          <div className="success-message">New post is successfully added!</div>
-        )}
+        <div className="success-message">{popupMessage}</div>
 
-        <button className="submit-btn" type="button" onClick={addNewPost}>
-          Create New Post
+        <button className="submit-btn" type="button" onClick={() => handleClickPopupBtn(popupBtnName)}>
+          {popupBtnName}
         </button>
       </div>
     </div>

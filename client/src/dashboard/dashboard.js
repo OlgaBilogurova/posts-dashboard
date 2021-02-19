@@ -5,16 +5,30 @@ import Sidebar from '../sidebar/sidebar';
 import Post from './post/post';
 import { fetchUsers, fetchPosts, saveNewPost } from '../services/data.service';
 import Popup from '../popup/popup';
+import { ButtonName, PopupMessages } from '../utils/constants';
 
 const Dashboard = () => {
+    const {CREATE_POST, DELETE_POST, EDIT_POST} = ButtonName;
+    const {CREATE_POST_MSG, DELETE_POST_MSG, EDIT_POST_MSG} = PopupMessages;
+
     const [users, setUsers] = useState([]);
     const [posts, setPosts] = useState([]);
+    const [usersById, setUsersById] = useState({});
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [newPostContent, setNewPostContent] = useState('');
-    const [isMessage, setIsMessage] = useState(false);
+    const [selectedPost, setSelectedPost] = useState(null);
+    const [popupMessage, setPopupMessage] = useState('');
+    const [popupBtnName, setPopupBtnName] = useState('button');
 
-    const openPopup = () => {
+    const openPopup = (post, btnName) => {
         setIsPopupOpen(!isPopupOpen);
+        setSelectedPost(post);
+        setPopupBtnName(btnName);
+        if (post) {
+            setNewPostContent(post.body);
+        } else {
+            setNewPostContent('');
+        }
     };
 
     const closePopup = (e) => {
@@ -22,17 +36,21 @@ const Dashboard = () => {
           e.target.className === 'bg-overlay active' ||
           e.target.id === 'popup-close-btn' ||
           e.target.className === 'line'
-        )
-            setIsPopupOpen(!isPopupOpen);
+        ) setIsPopupOpen(!isPopupOpen);
     };
 
     const handleTextareaChange = (e) => {
         setNewPostContent(e.target.value);
     };
 
+    const handleClickPopupBtn = (popupBtnName) => {
+        if (popupBtnName === CREATE_POST) addNewPost();
+        if (popupBtnName === EDIT_POST) editPost();
+        if (popupBtnName === DELETE_POST) deletePost();
+    };
+
     const addNewPost = () => {
         if (newPostContent.length === 0) return;
-        setIsMessage(true);
 
         // create a new post
         const lastPost = posts[posts.length - 1];
@@ -44,17 +62,59 @@ const Dashboard = () => {
         };
         // simulate save post on backend
         saveNewPost(newPost).then((res) => console.log(res));
+        setPopupMessage(CREATE_POST_MSG);
 
         // save a new post to the state
         setPosts([...posts, newPost]);
 
         // close popup, hide message, clear textarea
+        cleanPopup();
+    };
+
+    const editPost = () => {
+        // allows edit post body
+        let updatedPosts = posts.map((post) => {
+            if (post.id === selectedPost.id) {
+                return { ...post, body: newPostContent };
+            } else {
+                return post;
+            }
+        });
+        setPopupMessage(EDIT_POST_MSG);
+
+        // update state for posts
+        setPosts(updatedPosts);
+
+        // close popup, hide message, clear textarea
+        cleanPopup();
+    }
+
+    const deletePost = () => {
+        let updatedPosts = posts.filter((post) => (post.id !== selectedPost.id));
+        setPopupMessage(DELETE_POST_MSG);
+
+        // update state for posts
+        setPosts(updatedPosts);
+
+        // close popup, hide message, clear textarea
+        cleanPopup();
+    }
+
+    const cleanPopup = () => {
         setTimeout(() => {
             setIsPopupOpen(false);
-            setIsMessage(false);
+            setPopupMessage('');
             setNewPostContent('');
         }, 1500);
-    };
+    }
+
+    const processUsers = (users) => {
+        const usersObj = {};
+        users.forEach(user => {
+            usersObj[user.id] = user;
+        })
+        setUsersById(usersObj);
+    }
 
     useEffect(() => {
         async function fetchData() {
@@ -66,6 +126,7 @@ const Dashboard = () => {
             };
         }
         fetchData().then((data) => {
+            processUsers(data.users);
             setUsers(data.users);
             setPosts(data.posts);
         });
@@ -85,7 +146,12 @@ const Dashboard = () => {
               <section className="posts-container">
                   <div className="posts custom-scroll-bar">
                       {posts.map((post) => (
-                        <Post post={post} key={post.id} />
+                        <Post
+                          post={post}
+                          userName={usersById[post.userId].name}
+                          key={post.id}
+                          openPopup={openPopup}
+                        />
                       ))}
                   </div>
               </section>
@@ -95,9 +161,10 @@ const Dashboard = () => {
             isPopupOpen={isPopupOpen}
             closePopup={closePopup}
             newPostContent={newPostContent}
-            addNewPost={addNewPost}
+            handleClickPopupBtn={handleClickPopupBtn}
             handleTextareaChange={handleTextareaChange}
-            isMessage={isMessage}
+            popupMessage={popupMessage}
+            popupBtnName={popupBtnName}
           />
       </div>
     );

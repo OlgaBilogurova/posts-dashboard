@@ -1,10 +1,12 @@
 import React from 'react';
 import './sidebar.css';
+import { ButtonName } from '../utils/constants';
 
 const Sidebar = ({ numOfUsers, numOfPosts, openPopup }) => {
+  const {CREATE_POST} = ButtonName;
   return (
     <aside className="sidebar">
-      <button className="add-new-posts-btn" type="button" onClick={openPopup}>
+      <button className="add-new-posts-btn" type="button" onClick={() => openPopup(null, CREATE_POST)}>
         Add New Post
       </button>
 
