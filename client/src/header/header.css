@@ -59,3 +59,24 @@
 .dropdown-select:focus {
     outline: none;
 }
+
+@media (max-width: 670px) {
+    .app-header {
+        flex-wrap: wrap;
+        height: 100px;
+    }
+
+    .app-header h1,
+    .filters-container {
+        flex-basis: 100%;
+    }
+
+    .dropdown-container label {
+        padding: 8.8px 4px;
+    }
+
+    .dropdown-select {
+        padding: 8px 14px 8px 4px;
+        width: 125px;
+    }
+}

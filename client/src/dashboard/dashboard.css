@@ -17,3 +17,9 @@
     align-items: center;
     flex-wrap: wrap;
 }
+
+@media (max-width: 670px) {
+    .posts-container {
+        height: calc(100vh - 140px);
+    }
+}

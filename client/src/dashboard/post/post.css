@@ -62,3 +62,8 @@
     text-transform: uppercase;
 }
 
+@media (max-width: 670px) {
+    .post-container {
+        margin: 8px 0;
+    }
+}

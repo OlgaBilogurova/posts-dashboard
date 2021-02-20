@@ -164,11 +164,11 @@ const Dashboard = () => {
         }
         fetchData().then((data) => {
             if (data.users.length > 0 && data.posts.length > 0) {
+                setIsDashboard(true);
                 processUsers(data.users);
                 setUsers(data.users);
                 setPosts(data.posts);
                 setFilteredPosts(data.posts);
-                setIsDashboard(true);
             }
         });
     }, []);
