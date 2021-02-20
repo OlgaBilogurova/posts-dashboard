@@ -77,9 +77,9 @@ const Dashboard = () => {
 
     const editPost = () => {
         // allows edit post body
-        const updatedPosts = posts.map((post) => {
+        const updatedPosts = filteredPosts.map((post) => {
             if (post.id === selectedPost.id) {
-                return { ...post, body: newPostContent };
+                return { ...post, body: newPostContent, title: newPostContent.slice(0, 30)};
             } else {
                 return post;
             }
@@ -94,7 +94,7 @@ const Dashboard = () => {
     };
 
     const deletePost = () => {
-        const updatedPosts = posts.filter((post) => post.id !== selectedPost.id);
+        const updatedPosts = filteredPosts.filter((post) => post.id !== selectedPost.id);
         setPopupMessage(DELETE_POST_MSG);
 
         // update state for posts
