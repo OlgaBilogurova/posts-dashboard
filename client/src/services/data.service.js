@@ -5,7 +5,7 @@ export async function fetchPosts() {
         });
         return await response.json();
     } catch (error) {
-        console.log('User is not authorized in app');
+        console.log('Couldn\'t fetch posts from API');
         console.log(error);
         return null;
     }
@@ -18,7 +18,7 @@ export async function fetchUsers() {
         });
         return await response.json();
     } catch (error) {
-        console.log('User is not authorized in app');
+        console.log('Couldn\'t fetch users from API');
         console.log(error);
         return null;
     }

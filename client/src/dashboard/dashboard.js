@@ -8,8 +8,8 @@ import Popup from '../popup/popup';
 import { ButtonName, PopupMessages } from '../utils/constants';
 
 const Dashboard = () => {
-    const {CREATE_POST, DELETE_POST, EDIT_POST} = ButtonName;
-    const {CREATE_POST_MSG, DELETE_POST_MSG, EDIT_POST_MSG} = PopupMessages;
+    const { CREATE_POST, DELETE_POST, EDIT_POST } = ButtonName;
+    const { CREATE_POST_MSG, DELETE_POST_MSG, EDIT_POST_MSG } = PopupMessages;
 
     const [users, setUsers] = useState([]);
     const [posts, setPosts] = useState([]);
@@ -21,6 +21,7 @@ const Dashboard = () => {
     const [filteredPosts, setFilteredPosts] = useState([]);
     const [popupMessage, setPopupMessage] = useState('');
     const [popupBtnName, setPopupBtnName] = useState('button');
+    const [isDashboard, setIsDashboard] = useState(false);
 
     const openPopup = (post, btnName) => {
         setIsPopupOpen(!isPopupOpen);
@@ -38,7 +39,8 @@ const Dashboard = () => {
           e.target.className === 'bg-overlay active' ||
           e.target.id === 'popup-close-btn' ||
           e.target.className === 'line'
-        ) setIsPopupOpen(!isPopupOpen);
+        )
+            setIsPopupOpen(!isPopupOpen);
     };
 
     const handleTextareaChange = (e) => {
@@ -62,11 +64,11 @@ const Dashboard = () => {
             title: newPostContent.slice(0, 30),
             userId: lastPost.userId,
         };
-        // simulate save post on backend
+        // simulate saving post on the backend
         saveNewPost(newPost).then((res) => console.log(res));
         setPopupMessage(CREATE_POST_MSG);
 
-        // save a new post to the state
+        // set a new post to the state
         setFilteredPosts([...posts, newPost]);
 
         // close popup, hide message, clear textarea
@@ -89,10 +91,10 @@ const Dashboard = () => {
 
         // close popup, hide message, clear textarea
         cleanPopup();
-    }
+    };
 
     const deletePost = () => {
-        const updatedPosts = posts.filter((post) => (post.id !== selectedPost.id));
+        const updatedPosts = posts.filter((post) => post.id !== selectedPost.id);
         setPopupMessage(DELETE_POST_MSG);
 
         // update state for posts
@@ -100,7 +102,7 @@ const Dashboard = () => {
 
         // close popup, hide message, clear textarea
         cleanPopup();
-    }
+    };
 
     const cleanPopup = () => {
         setTimeout(() => {
@@ -108,44 +110,48 @@ const Dashboard = () => {
             setPopupMessage('');
             setNewPostContent('');
         }, 1500);
-    }
+    };
 
     const processUsers = (users) => {
         const usersObj = {};
-        users.forEach(user => {
+        users.forEach((user) => {
             usersObj[user.id] = user;
-        })
+        });
         setUsersById(usersObj);
-    }
+    };
 
     const filterPostsByUserName = (e) => {
         if (parseInt(e.target.value) === 0) return;
-        const updatedPosts = posts.filter((post) => (post.userId === parseInt(e.target.value)));
+        const updatedPosts = posts.filter(
+          (post) => post.userId === parseInt(e.target.value)
+        );
         setFilteredPosts(updatedPosts);
-    }
+    };
 
     const sortPosts = (e) => {
         let updatedPosts = [...posts];
-        switch(parseInt(e.target.value)) {
+        switch (parseInt(e.target.value)) {
             case 0:
                 return;
             case 1:
                 // sort by A-Z
-                updatedPosts.sort((a,b) => a.title.localeCompare(b.title));
+                updatedPosts.sort((a, b) => a.title.localeCompare(b.title));
                 break;
             case 2:
                 // sort by Z-A
-                updatedPosts.sort((a,b) => b.title.localeCompare(a.title));
+                updatedPosts.sort((a, b) => b.title.localeCompare(a.title));
                 break;
             case 3:
                 // sort by word count from more words to less
-                updatedPosts.sort((a,b) => b.body.split(" ").length - a.body.split(" ").length);
+                updatedPosts.sort(
+                  (a, b) => b.body.split(' ').length - a.body.split(' ').length
+                );
                 break;
             default:
                 return;
         }
         setFilteredPosts([...updatedPosts]);
-    }
+    };
 
     useEffect(() => {
         async function fetchData() {
@@ -157,16 +163,23 @@ const Dashboard = () => {
             };
         }
         fetchData().then((data) => {
-            processUsers(data.users);
-            setUsers(data.users);
-            setPosts(data.posts);
-            setFilteredPosts(data.posts);
+            if (data.users.length > 0 && data.posts.length > 0) {
+                processUsers(data.users);
+                setUsers(data.users);
+                setPosts(data.posts);
+                setFilteredPosts(data.posts);
+                setIsDashboard(true);
+            }
         });
     }, []);
 
-    return (
+    return isDashboard ? (
       <div className="dashboard">
-          <Header users={users} filterPostsByUserName={filterPostsByUserName} sortPosts={sortPosts} />
+          <Header
+            users={users}
+            filterPostsByUserName={filterPostsByUserName}
+            sortPosts={sortPosts}
+          />
 
           <main className="app-main">
               <Sidebar
@@ -199,6 +212,8 @@ const Dashboard = () => {
             popupBtnName={popupBtnName}
           />
       </div>
+    ) : (
+      <div>Something wrong. Please, try again later.</div>
     );
 };
 
