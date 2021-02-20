@@ -1,9 +1,9 @@
 .sidebar {
     min-width: 85px;
-    width: 20%;
+    flex-basis: 20%;
     max-width: 200px;
-    padding: 30px 10px;
-    height: calc(100vh - 55px);
+    padding: 30px 10px 10px 10px;
+    height: calc(100vh - 120px);
     background-color: #d9ead3;
     text-align: center;
 }
