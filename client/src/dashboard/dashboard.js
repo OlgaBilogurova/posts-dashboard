@@ -118,9 +118,33 @@ const Dashboard = () => {
         setUsersById(usersObj);
     }
 
-    const filterByUserName = (e) => {
+    const filterPostsByUserName = (e) => {
+        if (parseInt(e.target.value) === 0) return;
         const updatedPosts = posts.filter((post) => (post.userId === parseInt(e.target.value)));
         setFilteredPosts(updatedPosts);
+    }
+
+    const sortPosts = (e) => {
+        let updatedPosts = [...posts];
+        switch(parseInt(e.target.value)) {
+            case 0:
+                return;
+            case 1:
+                // sort by A-Z
+                updatedPosts.sort((a,b) => a.title.localeCompare(b.title));
+                break;
+            case 2:
+                // sort by Z-A
+                updatedPosts.sort((a,b) => b.title.localeCompare(a.title));
+                break;
+            case 3:
+                // sort by word count from more words to less
+                updatedPosts.sort((a,b) => b.body.split(" ").length - a.body.split(" ").length);
+                break;
+            default:
+                return;
+        }
+        setFilteredPosts([...updatedPosts]);
     }
 
     useEffect(() => {
@@ -142,7 +166,7 @@ const Dashboard = () => {
 
     return (
       <div className="dashboard">
-          <Header users={users} filterByUserName={filterByUserName} />
+          <Header users={users} filterPostsByUserName={filterPostsByUserName} sortPosts={sortPosts} />
 
           <main className="app-main">
               <Sidebar
