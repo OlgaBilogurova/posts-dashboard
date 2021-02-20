@@ -3,7 +3,6 @@
 }
 
 .posts-container {
-    flex-basis: 80%;
     overflow: hidden;
     height: calc(100vh - 120px);
     padding: 30px 10px 10px 30px;
